@@ -8,21 +8,34 @@
 #After the extraction the file that was cliked on ($1) will be oppend.
 #At the end of execution temp directory is removed.
 
+#Crate variable that will keep files in order
+COUNT=1
 
-mkdir /tmp/open_raw
+DIRECT=$( dirname "$1" )
 
-TMPFILE=`mktemp /tmp/open_raw/example.XXXXXXXXXX` || exit 1
+cd "$DIRECT"
+
+mkdir /tmp/open_raw 
+
+TMPFILE=`mktemp /tmp/open_raw/clicked.XXXXXXXXXX` || exit 1
 
 dcraw -c -e "$1" > $TMPFILE
 
 for f in *.RW2
 do 
-    echo "loop for $f"
-    LOOPFILE=`mktemp /tmp/open_raw/example.XXXXXXXXXX` || exit 1
+    LOOPFILE=$( mktemp "/tmp/open_raw/$COUNT.XXXXXXXXXX" || exit 1 )
     dcraw -c -e "$f" > $LOOPFILE
+    COUNT=$(( COUNT + 1 ))
 done
 
 xviewer $TMPFILE
 
-rmdir -rf /tmp/open_raw
+#remove tmp files
+
+for i in /tmp/open_raw/*.tmp
+do
+    rm $i
+done
+
+rmdir  /tmp/open_raw
 
