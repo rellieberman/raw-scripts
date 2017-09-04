@@ -1,16 +1,17 @@
 #!bin/bash
 
 #script to extract jpg from raw image using dcraw and display it with xviewer
+#currently only works with .RW2 files and xviewer
+#needs dcraw to be installed
 
-echo "file that will be opened: $1"
+#Script makes a folder in tmp wich will be used to extract all the imbeded images to.
+#After the extraction the file that was cliked on ($1) will be oppend.
+#At the end of execution temp directory is removed.
 
-pwd
 
 mkdir /tmp/open_raw
 
 TMPFILE=`mktemp /tmp/open_raw/example.XXXXXXXXXX` || exit 1
-
-echo "made tmp folder and file"
 
 dcraw -c -e "$1" > $TMPFILE
 
@@ -22,8 +23,6 @@ do
 done
 
 xviewer $TMPFILE
-
-echo $TMPFILE
 
 rmdir -rf /tmp/open_raw
 
