@@ -3,7 +3,7 @@ scripts for viewing raw files
 
 
 ## open_raw_files.sh
-Opens raw files in prefered image viewer:
+Opens raw files in prefered image viewer
 
 
 ### working method
